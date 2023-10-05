@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>มูลนิธิทีทีบี : ttb foundation</title>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-PW7HPDW');</script>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="assets/img/favicom.ico" rel="icon">
+
+  <!-- Google Fonts -->
+  <link
+  rel="stylesheet"
+  href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css"/>
+
+  <!-- Vendor CSS Files -->
+  <link href="assets/css/w3.css" rel="stylesheet">
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="assets/css/style.css" rel="stylesheet">
+  <link href="assets/css/css.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Anuphan&display=swap" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-firestore.js"></script>
+</head>
+
+
+<body>
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PW7HPDW"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+  <header id="header" class="d-flex align-items-center" style="background: #91b5ff;">
+    <div class="container d-flex align-items-center justify-content-between">
+      <a href="index.html"><img src="./img/logo.png" style="height: 40px;"></a>
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a class="nav-link scrollto " href="#hero">หน้าแรก</a></li>
+          <li><a class="nav-link scrollto" href="#about">รายละเอียด</a></li>
+          <li><a class="nav-link scrollto" href="#team">ข้อตกลงการใช้งาน</a></li>
+          <li><a class="nav-link scrollto" href="#contact">ติดต่อเรา</a></li>
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav>
+    </div>
+  </header><!-- End Header -->
+
+  <section class="inner-page" style="padding:40px 0" data-aos="fade-up">
+    <div class="container">
+      <div class="section-title">
+        <h2>ใบสมัครเข้าโครงการ <b>ไฟ-ฟ้า ทีทีบี</b></h2>
+        <div id="MyProfile" style="margin-top:10px;"></div>
+        <p style="margin-top:-10px;">4 ขั้นตอนในการขอสมัครเข้าร่วมเป็น นักเรียน/อาสาสมัคร<br>faifah by ttb กรุณาทำรายการให้ครบถ้วน</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="inner-page" data-aos="fade-up" data-aos-delay="200" style="background: #f2f6fb; margin-top:-8px;">
+    <div class="container">
+        <div class="section-title">
+          <h2 style="background: #a1acb5;">1. ข้อมูลผู้สมัครสมาชิก</h2>
+          <p>กรอกรายละเอียดของผู้สมัครสมาชิกของศูนย์ไฟ-ฟ้า ทีทีบี</p>
+        </div>
+        <div class="card mb-3">
+          <div class="card-body" style="background: #fff; border-radius: 15px;">
+            <div class="row">
+              <div class="col-sm-3">
+                <h6 class="mb-0">เพศ</h6>
+              </div>
+              <div class="col-sm-9 text-secondary">
+                <div id="sex"></div>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <h6 class="mb-0">ชื่อ-นามสกุล</h6>
+              </div>
+              <div class="col-sm-9 text-secondary">
+                <div id="empname"></div>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <h6 class="mb-0">หมายเลขบัตรประชาชน</h6>
+              </div>
+              <div class="col-sm-9 text-secondary">
+                <div id="idcard"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="inner-page" data-aos="fade-up" data-aos-delay="400" style="background: #ffffff;">
+    <div class="container">
+      <div class="col-md-8" style="width:95%;margin:auto;">
+        <div class="section-title">
+          <h2 style="background: #a1acb5;">2. เลือกประเภทสมาชิก</h2>
+        </div>
+      </div>
+      <center>
+        <div id="UserNew"></div>
+        <div class="txt-line-center" style="padding-bottom:0px;">เลือกประเภทสมาชิกที่ต้องการสมัคร</div>
+      </center>
+    </div>
+  </section>
+
+
+  <section class="inner-page" data-aos="fade-up" data-aos-delay="600" style="background: #f2f6fb; margin-top:-8px;">
+    <div class="container">
+      <div class="col-md-8" style="width:95%;margin:auto;">
+        <div class="section-title">
+          <h2 style="background: #a1acb5;">3. เลือกศูนย์ไฟ-ฟ้าที่ต้องการเป็นสมาชิก</h2>
+          <p>เลือกศูนย์ไฟ-ฟ้าเพียง 1 ศูนย์ที่ท่านต้องการเป็นสมาชิก</p>
+        </div>
+        <div id="DisplayLocation"></div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="inner-page" data-aos="fade-up" data-aos-delay="800" style="background: #ffffff;">
+    <div class="container">
+      <div class="col-md-8" style="width:95%; margin:auto;">
+        <div class="section-title">
+          <h2 style="background: #a1acb5;">4. เลือกประเภทความถนัด หรือสนใจ</h2>
+          <p>เลือกความสนใจ หรือความถนัดในกิจกรรมต่าง ๆ<br>(เลือกได้มากว่า 1 รายการ)</p>
+        </div>
+      </div>
+      <div id="DisplayInterest"></div>
+      <div class="clr"></div>
+    </div>
+  </section>
+
+
+  <section class="inner-page" data-aos="fade-up" data-aos-delay="1000" style="background: #ffffff; margin-top: -50px;">
+    <div class="row" id="savedata" style="display:none;">
+      <div class="col-sm-12">
+        <center>
+          <div class="btn btn-info btn-info-font green" onclick="SaveProfile()">บันทึกข้อมูลสมาชิก</div>
+          <div class="btn btn-info btn-info-font grey" onclick="gotohome()">กลับหน้าแรก</div>
+        </center>
+      </div>
+    </div>
+    <div class="row" id="confirmdata" style="display:none;">
+      <div class="col-sm-12">
+        <center>
+          <div class="btn btn-info btn-info-font green" onclick="SaveProfile()">บันทึกรายการแก้ไข</div>
+          <div class="btn btn-info btn-info-font grey" onclick="gotohome()">ไปหน้าแรก</div>
+        </center>
+      </div>
+    </div>
+  </section>
+
+
+  <div id="id01" class="w3-modal w3-animate-opacity">
+    <div class="w3-modal-content w3-card-4">
+      <div class="w3-container" style="min-height:300px;padding:24px;width:100%;text-align:center;">
+        <div class="section-title">
+          <h2>บันทึกรายการเรียบร้อยแล้ว</h2>
+        </div>
+        <div><img src="./img/logo_footer.png" style="width:100%; margin:30px auto 40px auto; max-width:200px;"></div>
+        <div id="ConfirmMember"></div>
+        <!--
+        <div onclick="ConfirmReg()" class="btn btn-info btn-info-font green">ยืนยันการสมัคร</div>
+        <div onclick="CloseAll()" class="btn btn-info btn-info-font red">ยังไม่ยืนยันตอนนี้</div>
+        <div class="btn btn-info btn-info-font grey">ยืนยันการสมัครแล้ว</div>
+        <div onclick="CloseAll()" class="btn btn-info btn-info-font grey">ปิดหน้าต่างนี้</div>
+        -->
+      </div>
+    </div>
+    <div class="clr" style="height: 70px;"></div>
+  </div>
+
+  <div id="id02" class="w3-modal w3-animate-opacity">
+    <div class="w3-modal-content w3-card-4">
+      <div class="w3-container" style="min-height:300px;padding:24px;width:100%;text-align:center;">
+        <div class="section-title">
+          <h2>ตรวจสอบการกรอกข้อมูลของคุณ</h2>
+        </div>
+        <div><img src="./img/CheckDoc.jpg" style="width:100%; max-width:200px; margin-bottom: 15px;"></div>
+        <div id="CheckKeyIN"></div>
+        <div onclick="CloseAll()" class="btn btn-info btn-info-font grey">ปิดหน้าต่างนี้</div>
+      </div>
+    </div>
+    <div class="clr" style="height: 70px;"></div>
+  </div>
+
+
+  <div id="id03" class="w3-modal w3-animate-opacity">
+    <div class="w3-modal-content w3-card-4">
+      <div class="w3-container" style="min-height:300px;padding:24px;width:100%;text-align:center;">
+        <div class="section-title">
+          <h2>ยืนยันการสมัครสมาชิก ไฟ-ฟ้า ทีทีบี</h2>
+        </div>
+        <div><img src="./img/confirm.png" style="width:100%; max-width:200px; margin-bottom: 25px;"></div>
+        <div>กรุณาติดต่อศูนย์ไฟ-ฟ้า เพื่อยืนยันตัวตน<br>ก่อนเริ่มต้นใช้ระบบงาน<br><br></div>
+        <div onclick="gotohome()" class="btn btn-info btn-info-font grey">กลับไปหน้าแรก</div>
+      </div>
+    </div>
+    <div class="clr" style="height: 70px;"></div>
+  </div>
+
+  <footer id="footer">
+    <div class="container py-4">
+      <div class="copyright">
+        &copy;Copyright <strong><span>faifah by ttb</span></strong> All Rights Reserved
+      </div>
+    </div>
+  </footer>
+
+
+  <div id="preloader"></div>
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="assets/vendor/purecounter/purecounter.js"></script>
+  <script src="assets/vendor/aos/aos.js"></script>
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="assets/vendor/waypoints/noframework.waypoints.js"></script>
+  <script src="assets/vendor/php-email-form/validate.js"></script>
+
+  <!-- Template Main JS File -->
+  <script src="assets/js/main.js"></script>
+  <script src="./js/connect.js"></script>
+  <script src="js/newmember.js"></script>
+
+</body>
+
+</html>
