@@ -410,8 +410,7 @@ function AddProfile() {
 
 function UpdateProfile() {
   var str = "";
-  if(xProfile_Status==0) { xProfile_Status = 1; } 
-  else if(xProfile_Status==2) { xProfile_Status = 9; }
+  if(xProfile_Status==0) { xProfile_Status = 1; }
   dbFaiFahRegister.doc(EidNewJoiner).update({
      Profile_Status : xProfile_Status,
      EmpSex : xEmpSex,
@@ -435,7 +434,8 @@ function UpdateProfile() {
 
 
 function ConfirmReg() {
-  xProfile_Status = 2;
+  //xProfile_Status = 2;
+  xProfile_Status = 9;
   dbFaiFahRegister.doc(EidNewJoiner).update({
      Profile_Status : xProfile_Status
   }); 
