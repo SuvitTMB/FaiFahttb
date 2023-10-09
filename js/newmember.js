@@ -18,26 +18,13 @@ var EidMember = "";
 
 $(document).ready(function () {
   if(sessionStorage.getItem("LineID")==null || sessionStorage.getItem("LineID")=="") { location.href = "index.html"; }
-
   window.scroll(0, 0);
-  var str = "";
-  var sLineID = "Ua6b6bf745bd9bfd01a180de1a05c23b3";
-  var sLineName = "Website";
-  var sLinePicture = "https://profile.line-scdn.net/0hoLlg-mNNMGNRHiaTpMdPNG1bPg4mMDYrKX8qVnIYOgYpe3QwbCp2AXVKaVN_fnMzOC16V3NMagF8";
-  sessionStorage.clear(); 
-  sessionStorage.setItem("LineID", sLineID);
-  sessionStorage.setItem("LineName", sLineName);
-  sessionStorage.setItem("LinePicture", sLinePicture);
-  str += '<div><img src="'+ sessionStorage.getItem("LinePicture") +'" class="user-profile"></div>';
-  str += '<div class="NameLine">'+ sessionStorage.getItem("LineName")+'</div>';
-  $("#MyProfile").html(str);  
   xTypeReg = getParameterByName('regtype');
   Connect_DB();
   dbFaiFahRegister = firebase.firestore().collection("faifah_register");
   dbFaiFahMember = firebase.firestore().collection("faifah_member");
+  Connect_Profile();
   CheckMember();
-  //Connect_DB();
-  //main();
 });
 
 
@@ -68,23 +55,13 @@ function CheckMember() {
         xTypeReg = doc.data().EmpTypeReg;
       }
       xLocation = doc.data().EmpLocation;
-/*
-      xInterest1 = doc.data().CheckBox1;
-      xInterest2 = doc.data().CheckBox2;
-      xInterest3 = doc.data().CheckBox3;
-      xInterest4 = doc.data().CheckBox4;
-      xInterest5 = doc.data().CheckBox5;
-      xInterest6 = doc.data().CheckBox6;
-      xInterest7 = doc.data().CheckBox7;
-      xInterest8 = doc.data().CheckBox8;
-*/
       arrPush.push(doc.data().CheckBox1,doc.data().CheckBox2,doc.data().CheckBox3,doc.data().CheckBox4,doc.data().CheckBox5,doc.data().CheckBox6,doc.data().CheckBox7,doc.data().CheckBox8);
       $("#empname").html(doc.data().EmpName);
       $("#sex").html(doc.data().EmpSex);
       $("#idcard").html(doc.data().EmpIDCard);
       $("#location").html(doc.data().EmpLocation);
-      MapDataMember();
-      //console.log("xInterest=="+xInterest);
+      CheckOldMember();
+      //MapDataMember();
     });
     if(xCheck==0) {
       AddProfile();
@@ -100,16 +77,16 @@ function CheckMember() {
 
     $("#empname").html("<input id='txtempname' type='text' value='"+ xEmpName +"'>");
     $("#idcard").html("<input id='txtidcard' type='number' value='"+ xIDCard +"'>");
-    if(xTypeReg=="นักเรียน") {
-      $("#UserNew").html("<div class='radio-toolbar'><input type='radio' id='radio3' name='typereg' value='นักเรียน' checked><label for='radio3'>นักเรียน</label><input type='radio' id='radio4' name='typereg' value='อาสาสมัคร'><label for='radio4'>อาสาสมัคร</label><input type='radio' id='radio5' name='typereg' value='อาจารย์'><label for='radio5'>อาจารย์</label><input type='radio' id='radio6' name='typereg' value='พนักงาน'><label for='radio6'>พนักงาน</label></div>");
+    if(xTypeReg=="เด็กห้องสมุด") {
+      $("#UserNew").html("<div class='radio-toolbar'><input onclick='ChangeLocation(1)' type='radio' id='radio3' name='typereg' value='เด็กห้องสมุด' checked><label for='radio3'>เด็กห้องสมุด</label><input onclick='ChangeLocation(2)' type='radio' id='radio4' name='typereg' value='เด็กไฟ-ฟ้า'><label for='radio4'>เด็กไฟ-ฟ้า</label><input onclick='ChangeLocation(3)' type='radio' id='radio5' name='typereg' value='อาสาสมัคร'><label for='radio5'>อาสาสมัคร</label><input onclick='ChangeLocation(4)' type='radio' id='radio6' name='typereg' value='อาจารย์'><label for='radio6'>อาจารย์</label></div>");
+    } else if(xTypeReg=="เด็กไฟ-ฟ้า") {
+      $("#UserNew").html("<div class='radio-toolbar'><input onclick='ChangeLocation(1)' type='radio' id='radio3' name='typereg' value='เด็กห้องสมุด'><label for='radio3'>เด็กห้องสมุด</label><input onclick='ChangeLocation(2)' type='radio' id='radio4' name='typereg' value='เด็กไฟ-ฟ้า' checked><label for='radio4'>เด็กไฟ-ฟ้า</label><input onclick='ChangeLocation(3)' type='radio' id='radio5' name='typereg' value='อาสาสมัคร'><label for='radio5'>อาสาสมัคร</label><input onclick='ChangeLocation(4)' type='radio' id='radio6' name='typereg' value='อาจารย์'><label for='radio6'>อาจารย์</label></div>");
     } else if(xTypeReg=="อาสาสมัคร") {
-      $("#UserNew").html("<div class='radio-toolbar'><input type='radio' id='radio3' name='typereg' value='นักเรียน'><label for='radio3'>นักเรียน</label><input type='radio' id='radio4' name='typereg' value='อาสาสมัคร' checked><label for='radio4'>อาสาสมัคร</label><input type='radio' id='radio5' name='typereg' value='อาจารย์'><label for='radio5'>อาจารย์</label><input type='radio' id='radio6' name='typereg' value='พนักงาน'><label for='radio6'>พนักงาน</label></div>");
+      $("#UserNew").html("<div class='radio-toolbar'><input onclick='ChangeLocation(1)' type='radio' id='radio3' name='typereg' value='เด็กห้องสมุด'><label for='radio3'>เด็กห้องสมุด</label><input onclick='ChangeLocation(2)' type='radio' id='radio4' name='typereg' value='เด็กไฟ-ฟ้า'><label for='radio4'>เด็กไฟ-ฟ้า</label><input onclick='ChangeLocation(3)' type='radio' id='radio5' name='typereg' value='อาสาสมัคร' checked><label for='radio5'>อาสาสมัคร</label><input onclick='ChangeLocation(4)' type='radio' id='radio6' name='typereg' value='อาจารย์'><label for='radio6'>อาจารย์</label></div>");
     } else if(xTypeReg=="อาจารย์") {
-      $("#UserNew").html("<div class='radio-toolbar'><input type='radio' id='radio3' name='typereg' value='นักเรียน'><label for='radio3'>นักเรียน</label><input type='radio' id='radio4' name='typereg' value='อาสาสมัคร'><label for='radio4'>อาสาสมัคร</label><input type='radio' id='radio5' name='typereg' value='อาจารย์' checked><label for='radio5'>อาจารย์</label><input type='radio' id='radio6' name='typereg' value='พนักงาน'><label for='radio6'>พนักงาน</label></div>");
-    } else if(xTypeReg=="พนักงาน") {
-      $("#UserNew").html("<div class='radio-toolbar'><input type='radio' id='radio3' name='typereg' value='นักเรียน'><label for='radio3'>นักเรียน</label><input type='radio' id='radio4' name='typereg' value='อาสาสมัคร'><label for='radio4'>อาสาสมัคร</label><input type='radio' id='radio5' name='typereg' value='อาจารย์'><label for='radio5'>อาจารย์</label><input type='radio' id='radio6' name='typereg' value='พนักงาน' checked><label for='radio6'>พนักงาน</label></div>");
+      $("#UserNew").html("<div class='radio-toolbar'><input onclick='ChangeLocation(1)' type='radio' id='radio3' name='typereg' value='เด็กห้องสมุด'><label for='radio3'>เด็กห้องสมุด</label><input onclick='ChangeLocation(2)' type='radio' id='radio4' name='typereg' value='เด็กไฟ-ฟ้า'><label for='radio4'>เด็กไฟ-ฟ้า</label><input onclick='ChangeLocation(3)' type='radio' id='radio5' name='typereg' value='อาสาสมัคร'><label for='radio5'>อาสาสมัคร</label><input onclick='ChangeLocation(4)' type='radio' id='radio6' name='typereg' value='อาจารย์' checked><label for='radio6'>อาจารย์</label></div>");
     } else {
-      $("#UserNew").html("<div class='radio-toolbar'><input type='radio' id='radio3' name='typereg' value='นักเรียน'><label for='radio3'>นักเรียน</label><input type='radio' id='radio4' name='typereg' value='อาสาสมัคร'><label for='radio4'>อาสาสมัคร</label><input type='radio' id='radio5' name='typereg' value='อาจารย์'><label for='radio5'>อาจารย์</label><input type='radio' id='radio6' name='typereg' value='พนักงาน'><label for='radio6'>พนักงาน</label></div>");
+      $("#UserNew").html("<div class='radio-toolbar'><input onclick='ChangeLocation(1)' type='radio' id='radio3' name='typereg' value='เด็กห้องสมุด'><label for='radio3'>เด็กห้องสมุด/label><input onclick='ChangeLocation(2)' type='radio' id='radio4' name='typereg' value='เด็กไฟ-ฟ้า'><label for='radio4'>เด็กไฟ-ฟ้า</label><input onclick='ChangeLocation(3)' type='radio' id='radio5' name='typereg' value='อาสาสมัคร'><label for='radio5'>อาสาสมัคร</label><input onclick='ChangeLocation(4)' type='radio' id='radio6' name='typereg' value='อาจารย์'><label for='radio6'>อาจารย์</label></div>");
     }
 
     if(xEmpSex=="ชาย") {
@@ -128,9 +105,13 @@ function CheckMember() {
         str += '<span class="radio-btn"><i class="las la-check"></i><div class="hobbies-icon">';
         str += '<div><img src="./icon/'+ arrLocationE[i] +'.png"></div><div class="radio-label">'+ arrLocation[i] +'</div></div></span></label>';
       } else {
-        str += '<label class="custom-radio"><input type="radio" id="r'+ i +'" name="SelectPlace" value="'+ arrLocation[i] +'">';
-        str += '<span class="radio-btn"><i class="las la-check"></i><div class="hobbies-icon">';
-        str += '<div><img src="./icon/'+ arrLocationE[i] +'.png"></div><div class="radio-label">'+ arrLocation[i] +'</div></div></span></label>';
+        if(i==0 && (xTypeReg=="เด็กห้องสมุด" || xTypeReg=="เด็กไฟ-ฟ้า")) {
+
+        } else {
+          str += '<label class="custom-radio"><input type="radio" id="r'+ i +'" name="SelectPlace" value="'+ arrLocation[i] +'">';
+          str += '<span class="radio-btn"><i class="las la-check"></i><div class="hobbies-icon">';
+          str += '<div><img src="./icon/'+ arrLocationE[i] +'.png"></div><div class="radio-label">'+ arrLocation[i] +'</div></div></span></label>';
+        }
       }
     } 
     str += '</fieldset></div>';
@@ -195,6 +176,58 @@ function CheckMember() {
 }
 
 
+function ChangeLocation(x) {
+  var str = "";
+  //var CountLength = 0;
+  if(x==1) {
+    xTypeReg="เด็กห้องสมุด";
+    //CountLength = (arrLocation.length-1);
+  } else if(x==2) { 
+    xTypeReg="เด็กไฟ-ฟ้า";
+    //CountLength = (arrLocation.length-1);
+  } else if(x==3) { 
+    xTypeReg="อาสาสมัคร";
+    //CountLength = arrLocation.length;
+  } else if(x==4) { 
+    xTypeReg="อาจารย์";
+    //CountLength = arrLocation.length;
+  }
+  //console.log(x+"==="+xTypeReg+"==="+xLocation);
+  str += '<fieldset class="checkbox-group" style="margin-top:5px;"><div class="radio-buttons">';
+  for (var i = 0, length = arrLocation.length; i < length; i++) {
+    if(arrLocation[i]==xLocation) {
+      str += '<label class="custom-radio"><input type="radio" id="r'+ i +'" name="SelectPlace" value="'+ arrLocation[i] +'" checked>';
+      str += '<span class="radio-btn"><i class="las la-check"></i><div class="hobbies-icon">';
+      str += '<div><img src="./icon/'+ arrLocationE[i] +'.png"></div><div class="radio-label">'+ arrLocation[i] +'</div></div></span></label>';
+    } else {
+      if(i==0 && (xTypeReg=="เด็กห้องสมุด" || xTypeReg=="เด็กไฟ-ฟ้า")) {
+      } else {
+        str += '<label class="custom-radio"><input type="radio" id="r'+ i +'" name="SelectPlace" value="'+ arrLocation[i] +'">';
+        str += '<span class="radio-btn"><i class="las la-check"></i><div class="hobbies-icon">';
+        str += '<div><img src="./icon/'+ arrLocationE[i] +'.png"></div><div class="radio-label">'+ arrLocation[i] +'</div></div></span></label>';
+      }
+    }
+  } 
+  str += '</fieldset></div>';
+  $("#DisplayLocation").html(str);
+}
+
+
+function CheckOldMember() {
+  //console.log("183-EidMember="+EidMember);
+  dbFaiFahMember.where('LineID','==',sessionStorage.getItem("LineID"))
+  //.where('EmpIDCard','==',xIDCard)
+  //.where('EmpName','==',xEmpName)
+  .limit(1)
+  .get().then((snapshot)=> {
+    snapshot.forEach(doc=>{
+      EidMember = doc.id;
+      console.log("191-EidMember= "+EidMember);
+    });
+  });
+}
+
+
 function CheckInterest() {
   dbFaiFahRegister.where('LineID','==',sessionStorage.getItem("LineID"))
   .limit(1)
@@ -221,81 +254,83 @@ function Interest(i,t) {
   } else {
     ValueItem = "";
   }
-  if(i==0) {
-    dbFaiFahRegister.doc(EidNewJoiner).update({
-      CheckBox1 : ValueItem
-    });
-    if(EidMember!="") {
-      dbFaiFahMember.doc(EidMember).update({
+  //if(EidMember!="") {
+    if(i==0) {
+      dbFaiFahRegister.doc(EidNewJoiner).update({
         CheckBox1 : ValueItem
-      });      
-    }
-    console.log("EidMember="+EidMember);
-    //xCheckBox1 = ValueItem;
-  } else if(i==1) {
-    dbFaiFahRegister.doc(EidNewJoiner).update({
-      CheckBox2 : ValueItem
-    });
-    if(EidMember!="") {
-      dbFaiFahMember.doc(EidMember).update({
+      });
+      if(EidMember!="") {
+        dbFaiFahMember.doc(EidMember).update({
+          CheckBox1 : ValueItem
+        });      
+      }
+      //console.log("EidMember="+EidMember);
+      //xCheckBox1 = ValueItem;
+    } else if(i==1) {
+      dbFaiFahRegister.doc(EidNewJoiner).update({
         CheckBox2 : ValueItem
-      });      
-    }
-  } else if(i==2) {
-    dbFaiFahRegister.doc(EidNewJoiner).update({
-      CheckBox3 : ValueItem
-    });
-    if(EidMember!="") {
-      dbFaiFahMember.doc(EidMember).update({
+      });
+      if(EidMember!="") {
+        dbFaiFahMember.doc(EidMember).update({
+          CheckBox2 : ValueItem
+        });      
+      }
+    } else if(i==2) {
+      dbFaiFahRegister.doc(EidNewJoiner).update({
         CheckBox3 : ValueItem
-      });      
-    }
-  } else if(i==3) {
-    dbFaiFahRegister.doc(EidNewJoiner).update({
-      CheckBox4 : ValueItem
-    });
-    if(EidMember!="") {
-      dbFaiFahMember.doc(EidMember).update({
+      });
+      if(EidMember!="") {
+        dbFaiFahMember.doc(EidMember).update({
+          CheckBox3 : ValueItem
+        });      
+      }
+    } else if(i==3) {
+      dbFaiFahRegister.doc(EidNewJoiner).update({
         CheckBox4 : ValueItem
-      });      
-    }
-  } else if(i==4) {
-    dbFaiFahRegister.doc(EidNewJoiner).update({
-      CheckBox5 : ValueItem
-    });
-    if(EidMember!="") {
-      dbFaiFahMember.doc(EidMember).update({
+      });
+      if(EidMember!="") {
+        dbFaiFahMember.doc(EidMember).update({
+          CheckBox4 : ValueItem
+        });      
+      }
+    } else if(i==4) {
+      dbFaiFahRegister.doc(EidNewJoiner).update({
         CheckBox5 : ValueItem
-      });      
-    }
-  } else if(i==5) {
-    dbFaiFahRegister.doc(EidNewJoiner).update({
-      CheckBox6 : ValueItem
-    });
-    if(EidMember!="") {
-      dbFaiFahMember.doc(EidMember).update({
+      });
+      if(EidMember!="") {
+        dbFaiFahMember.doc(EidMember).update({
+          CheckBox5 : ValueItem
+        });      
+      }
+    } else if(i==5) {
+      dbFaiFahRegister.doc(EidNewJoiner).update({
         CheckBox6 : ValueItem
-      });      
-    }
-  } else if(i==6) {
-    dbFaiFahRegister.doc(EidNewJoiner).update({
-      CheckBox7 : ValueItem
-    });
-    if(EidMember!="") {
-      dbFaiFahMember.doc(EidMember).update({
+      });
+      if(EidMember!="") {
+        dbFaiFahMember.doc(EidMember).update({
+          CheckBox6 : ValueItem
+        });      
+      }
+    } else if(i==6) {
+      dbFaiFahRegister.doc(EidNewJoiner).update({
         CheckBox7 : ValueItem
-      });      
-    }
-  } else if(i==7) {
-    dbFaiFahRegister.doc(EidNewJoiner).update({
-      CheckBox8 : ValueItem
-    });
-    if(EidMember!="") {
-      dbFaiFahMember.doc(EidMember).update({
+      });
+      if(EidMember!="") {
+        dbFaiFahMember.doc(EidMember).update({
+          CheckBox7 : ValueItem
+        });      
+      }
+    } else if(i==7) {
+      dbFaiFahRegister.doc(EidNewJoiner).update({
         CheckBox8 : ValueItem
-      });      
-    }
-  }
+      });
+      if(EidMember!="") {
+        dbFaiFahMember.doc(EidMember).update({
+          CheckBox8 : ValueItem
+        });      
+      }
+    }    
+  //}
   //console.log(ValueCheckBox+"==="+ValueItem+"==="+i+"==="+t);
 }
 
@@ -313,14 +348,14 @@ function SaveProfile() {
   xIDCard = document.getElementById("txtidcard").value;
 
   var Xradios1 = document.getElementsByName('typereg');
-  console.log(document.getElementsByName('typereg'));
+  //console.log(document.getElementsByName('typereg'));
   for (var i = 0, length = Xradios1.length; i < length; i++) {
     if (Xradios1[i].checked) {
       xTypeReg = Xradios1[i].value;
       break;
     }
   }
-      console.log(xTypeReg);
+  //console.log(xTypeReg);
   //alert("xTypeReg="+xTypeReg);
 
   var xSelectPlace = document.getElementsByName('SelectPlace');
@@ -375,7 +410,6 @@ function AddProfile() {
 
 function UpdateProfile() {
   var str = "";
-  //console.log("Save Profile id="+EidNewJoiner);
   if(xProfile_Status==0) { xProfile_Status = 1; }
   dbFaiFahRegister.doc(EidNewJoiner).update({
      Profile_Status : xProfile_Status,
@@ -394,84 +428,113 @@ function UpdateProfile() {
   }
   $("#ConfirmMember").html(str);
   document.getElementById('id01').style.display='block';
-  MapDataMember();
-  CheckMember();
+  //MapDataMember();
+  //CheckMember();
 }
 
 
 function ConfirmReg() {
-  dbFaiFahRegister.doc(EidNewJoiner).update({
-     Profile_Status : 2
-  }); 
-  CheckMember();
-  //MapDataMember();
   xProfile_Status = 2;
+  dbFaiFahRegister.doc(EidNewJoiner).update({
+     Profile_Status : xProfile_Status
+  }); 
+  //CheckMember();
+  //AddNewProfile();
+  MapDataMember();
   document.getElementById('id01').style.display='none';
   document.getElementById('id03').style.display='block';
   window.scroll(0, 0);
 }
 
 
-/*
-function CheckInterest() {
+
+var arrCalBox = [];
+function CalCheckBox() {
+  arrCalBox = [];
   dbFaiFahRegister.where('LineID','==',sessionStorage.getItem("LineID"))
   .limit(1)
   .get().then((snapshot)=> {
     snapshot.forEach(doc=>{
-      xInterest1 = doc.data().CheckBox1;
-      xInterest2 = doc.data().CheckBox2;
-      xInterest3 = doc.data().CheckBox3;
-      xInterest4 = doc.data().CheckBox4;
-      xInterest5 = doc.data().CheckBox5;
-      xInterest6 = doc.data().CheckBox6;
-      xInterest7 = doc.data().CheckBox7;
-      xInterest8 = doc.data().CheckBox8;
+      arrCalBox.push(doc.data().CheckBox1,doc.data().CheckBox2,doc.data().CheckBox3,doc.data().CheckBox4,doc.data().CheckBox5,doc.data().CheckBox6,doc.data().CheckBox7,doc.data().CheckBox8);
     });
+    console.log(arrCalBox);
   });
 }
-*/
+
 
 function MapDataMember() {
+  CalCheckBox();
   //CheckInterest();
   //console.log("xIDCard="+xIDCard);
   //var EidMember = "";
+  //console.log("Map Data");
   dbFaiFahMember.where('EmpIDCard','==',xIDCard)
+  .where('EmpName','==',xEmpName)
+  //dbFaiFahMember.where('LineID','==',sessionStorage.getItem("LineID"))
   .limit(1)
   .get().then((snapshot)=> {
     snapshot.forEach(doc=>{
-      //console.log(xEmpSex+"==="+xLocation+"==="+xTypeReg);
-      //console.log(xInterest1+"=="+xInterest2+"=="+xInterest3);
-      //if(doc.data().LineID=="" && doc.data().LineName=="" && doc.data().LinePicture=="") {
-        EidMember = doc.id;
-        dbFaiFahMember.doc(EidMember).update({
-           LineID : sessionStorage.getItem("LineID"),
-           LineName : sessionStorage.getItem("LineName"),
-           LinePicture : sessionStorage.getItem("LinePicture"),
-           EmpSex : xEmpSex,
-           EmpLocation : xLocation,
-           EmpTypeReg : xTypeReg,
-           CheckBox1 : xInterest1,
-           CheckBox2 : xInterest2,
-           CheckBox3 : xInterest3,
-           CheckBox4 : xInterest4,
-           CheckBox5 : xInterest5,
-           CheckBox6 : xInterest6,
-           CheckBox7 : xInterest7,
-           CheckBox8 : xInterest8
-        }); 
-      //}
-        //console.log("Save Done");
-
-
-        //console.log("เจอ เป็นค่าว่าง = "+xIDCard+" ID= "+EidMember);
-      //} else {
-      //  console.log("เจอ มีข้อมูลอยู่แล้ว = "+xIDCard);
-      //console.log(doc.data().LineID);
+      EidMember = doc.id;
+      dbFaiFahMember.doc(EidMember).update({
+         LineID : sessionStorage.getItem("LineID"),
+         LineName : sessionStorage.getItem("LineName"),
+         LinePicture : sessionStorage.getItem("LinePicture"),
+         //EmpName : xEmpName,
+         //EmpIDCard : xIDCard,
+         EmpSex : xEmpSex,
+         EmpLocation : xLocation,
+         EmpTypeReg : xTypeReg,
+         CheckBox1 : arrCalBox[0],
+         CheckBox2 : arrCalBox[1],
+         CheckBox3 : arrCalBox[2],
+         CheckBox4 : arrCalBox[3],
+         CheckBox5 : arrCalBox[4],
+         CheckBox6 : arrCalBox[5],
+         CheckBox7 : arrCalBox[6],
+         CheckBox8 : arrCalBox[7],
+         ConfirmBox1 : 0,
+         ConfirmBox2 : 0,
+         ConfirmBox3 : 0,
+         ConfirmDate : "",
+         Member_Admin : 0,
+         Member_Status : 0
+      }); 
     });
+    if(EidMember=="") {
+      AddNewProfile();
+    }
   });
 }
 
 
+function AddNewProfile() {
+  //CalCheckBox();
+  dbFaiFahMember.add({
+    LineID : sessionStorage.getItem("LineID"),
+    LineName : sessionStorage.getItem("LineName"),
+    LinePicture : sessionStorage.getItem("LinePicture"),
+    EmpMemberID : "",
+    ImgProfile : "",
+    EmpName : xEmpName,
+    EmpSex : xEmpSex,
+    EmpNickname : "",
+    EmpIDCard : xIDCard,
+    EmpBirthday : "",
+    EmpAge : "",
+    EmpTypeReg : xTypeReg,
+    EmpLocation : xLocation,
+    CheckBox1 : arrCalBox[0],
+    CheckBox2 : arrCalBox[1],
+    CheckBox3 : arrCalBox[2],
+    CheckBox4 : arrCalBox[3],
+    CheckBox5 : arrCalBox[4],
+    CheckBox6 : arrCalBox[5],
+    CheckBox7 : arrCalBox[6],
+    CheckBox8 : arrCalBox[7],
+    Member_Admin : 0,
+    Member_Status : 0
+  });
+}
 /*
 
 function NewDate() {

@@ -12,3 +12,11 @@ function Connect_DB() {
   };
   firebase.initializeApp(firebaseConfig);
 }
+
+
+function Connect_Profile() {
+  var str = "";
+  str += '<div><img src="'+ sessionStorage.getItem("LinePicture") +'" class="user-profile"></div>';
+  str += '<div class="NameLine">'+ sessionStorage.getItem("LineName")+'</div>';
+  $("#MyProfile").html(str);  
+}

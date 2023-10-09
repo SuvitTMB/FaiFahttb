@@ -135,14 +135,14 @@ function CheckMember() {
       console.log("Found==="+doc.data().Member_Status);
       CheckFoundData = 1;
       EidProfile = doc.id;
+      sessionStorage.setItem("EmpIDCard_faifah", doc.data().EmpIDCard);
+      sessionStorage.setItem("EmpName_faifah", doc.data().EmpName);
+      sessionStorage.setItem("EmpRefID_faifah", doc.id);
       if(doc.data().Member_Status==0) {
         // Member_Status==0 กรอกข้อมูลสมาชิกให้ครบถ้วน
         document.getElementById('loading').style.display='none';
         document.getElementById('UpdateMember').style.display='block';
         //alert("Check");
-        //sessionStorage.setItem("EmpID_faifah", doc.data().EmpID);
-        //sessionStorage.setItem("EmpName_faifah", doc.data().EmpName);
-        //sessionStorage.setItem("EmpRefID", doc.id);
       } else if(doc.data().Member_Status==1) {
         // Member_Status==1 เข้าสู่เว็บไซต์ไฟ-ฟ้า
         document.getElementById('loading').style.display='none';
@@ -197,15 +197,43 @@ function GotoFaiFah() {
 }
 
 
+function RegOpen(x) {
+  var str = "";
+  if(x==1) {
+    str += '<div><img src="./icon/icon-youth.png" style="width:100%; margin:10px auto 20px auto; max-width:120px;"></div>';
+    str += '<div class="home-txt" style="margin-bottom: 30px;"><b>ประเภท เด็กห้องสมุด</b><br>(สำหรับเยาวชนอายุ 8 – ต่ำกว่า 12 ปี)</div>';
+  } else if(x==2) { 
+    str += '<div><img src="./icon/art.png" style="width:100%; margin:10px auto 20px auto; max-width:120px;"></div>';
+    str += '<div class="home-txt" style="margin-bottom: 30px;"><b>ประเภท เด็กไฟ-ฟ้า</b><br>(สำหรับเยาวชนอายุ 12 – 17 ปี)</div>';
+  } else if(x==3) { 
+    str += '<div><img src="./icon/icon-volunteer.png" style="width:100%; margin:10px auto 20px auto; max-width:120px;"></div>';
+    str += '<div class="home-txt" style="margin-bottom: 30px;"><b>ประเภท อาสาสมัคร</b><br>(สำหรับประจำ HQ หรือศูนย์ไฟ-ฟ้า ทีทีบี)</div>';
+  } else if(x==4) { 
+    str += '<div><img src="./icon/drama.png" style="width:100%; margin:10px auto 20px auto; max-width:120px;"></div>';
+    str += '<div class="home-txt" style="margin-bottom: 30px;"><b>ประเภท อาจารย์</b><br>(สำหรับประจำ HQ หรือศูนย์ไฟ-ฟ้า ทีทีบี)</div>';
+  } 
+  str += '<div onclick="RegType('+x+')" class="btn btn-info btn-info-font green">ยืนยันการสมัคร</div> ';
+  str += '<div onclick="CloseAll()" class="btn btn-info btn-info-font grey">เลือกประเภทใหม่</div>';
+  $("#DisplayOpen").html(str);
+  document.getElementById('id01').style.display='block';
+}
+          
+
+
 function RegType(x) {
   if(x==1) {
-    location.href = "newmember.html?regtype=นักเรียน";
+    location.href = "newmember.html?regtype=เด็กห้องสมุด";
   } else if(x==2) {
+    location.href = "newmember.html?regtype=เด็กไฟ-ฟ้า";
+  } else if(x==3) {
     location.href = "newmember.html?regtype=อาสาสมัคร";
+  } else if(x==4) {
+    location.href = "newmember.html?regtype=อาจารย์";
   }
 }
 
 
+/*
 
 function Reg_Waitting() {
   alert("รอการยืนยัน");
@@ -213,7 +241,6 @@ function Reg_Waitting() {
 
 
 
-/*
 var gcheck = 0;
 function CheckRewards() {
   console.log(sessionStorage.getItem("EmpID_Moon2023"));

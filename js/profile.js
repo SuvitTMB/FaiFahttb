@@ -16,25 +16,19 @@ var xInterest1, xInterest2, xInterest3, xInterest4, xInterest5, xInterest6, xInt
 var xEmpTypeReg = "";
 var xImgProfile = "";
 var xEid = "";
-var xEmpMember = "";
+var xEmpMemberID = "";
+var xEmpSex = "";
+//var xEmpMember = "";
 var xEmpName = "";
 var xEmpNickname = "";
 var xEmpBirthday = "";
+//var Xyear = 0;
+var xConfirmBox1 = 0;
 
 
 $(document).ready(function () {
 
-  var sEmpMember = "faifah0001";
-  var sLineID = "Ua6b6bf745bd9bfd01a180de1a05c23b3";
-  var sLineName = "Website";
-  var sLinePicture = "https://profile.line-scdn.net/0hoLlg-mNNMGNRHiaTpMdPNG1bPg4mMDYrKX8qVnIYOgYpe3QwbCp2AXVKaVN_fnMzOC16V3NMagF8";
-  sessionStorage.setItem("LineID", sLineID);
-  sessionStorage.setItem("LineName", sLineName);
-  sessionStorage.setItem("LinePicture", sLinePicture);
-  sessionStorage.setItem("EmpMember_faifah", sEmpMember);
-
-
-  if(sessionStorage.getItem("EmpMember_faifah")==null) { location.href = "index.html"; }
+  if(sessionStorage.getItem("EmpIDCard_faifah")==null) { location.href = "index.html"; }
   Connect_DB();
   dbFaiFahMember = firebase.firestore().collection("faifah_member");
 
@@ -51,6 +45,7 @@ $(document).ready(function () {
         reader.readAsDataURL(file);
     }
   });
+  Connect_Profile();
   LoadProfile();
   //CheckLike();
 });
@@ -58,18 +53,25 @@ $(document).ready(function () {
 
 function LoadProfile() {
   str = "";
-  dbFaiFahMember.where('EmpMember','==',sessionStorage.getItem("EmpMember_faifah"))
+  dbFaiFahMember.where('EmpIDCard','==',sessionStorage.getItem("EmpIDCard_faifah"))
   .limit(1)
   .get().then((snapshot)=> {
     snapshot.forEach(doc=>{
       xEid = doc.id;
+      xEmpMemberID = doc.data().EmpMemberID;
       xEmpTypeReg = doc.data().EmpTypeReg+" ศูนย์ไฟ-ฟ้า"+doc.data().EmpLocation;
       xImgProfile = doc.data().ImgProfile;
-      xEmpMember = doc.data().EmpMember;
       xEmpName = doc.data().EmpName;
       xEmpNickname = doc.data().EmpNickname;
       xEmpSex = doc.data().EmpSex;
+      xEmpIDCard = doc.data().EmpIDCard;
       xEmpBirthday = doc.data().EmpBirthday;
+      xConfirmBox1 = doc.data().ConfirmBox1;
+
+
+
+/*
+      //xEmpMember = doc.data().EmpMember;
       xHomeAddress = doc.data().HomeAddress;
       xPhoneHome = doc.data().PhoneHome;
       xPhoneMobile = doc.data().PhoneMobile;
@@ -79,13 +81,20 @@ function LoadProfile() {
       xOfficeAddress = doc.data().OfficeAddress;
       xPhoneOffice = doc.data().PhoneOffice;
       xEmpMail = doc.data().EmpMail;
+*/
       arrPush.push(doc.data().CheckBox1,doc.data().CheckBox2,doc.data().CheckBox3,doc.data().CheckBox4,doc.data().CheckBox5,doc.data().CheckBox6,doc.data().CheckBox7,doc.data().CheckBox8);
-      $("#empid").html(doc.data().EmpMember);
+      $("#empid").html(doc.data().EmpMemberID);
       $("#member").html(doc.data().EmpTypeReg+" ศูนย์ไฟ-ฟ้า"+doc.data().EmpLocation);
       $("#fullname").html(doc.data().EmpName);
       $("#nickname").html(doc.data().EmpNickname);
       $("#sex").html(doc.data().EmpSex);
+      $("#idcard").html(doc.data().EmpIDCard);
       $("#birthday").html(ConvertDate(doc.data().EmpBirthday) + " (อายุ " + doc.data().EmpAge + ")");
+      $("#confirm1").html(doc.data().ConfirmBox1);
+
+
+
+/*
       $("#homeaddress").html(doc.data().HomeAddress);
       $("#phonehome").html(formatPhoneHome(doc.data().PhoneHome));
       $("#phonemobile").html(formatPhoneHome(doc.data().PhoneMobile));
@@ -95,6 +104,7 @@ function LoadProfile() {
       $("#officeaddress").html(doc.data().OfficeAddress);
       $("#phoneoffice").html(formatPhoneHome(doc.data().PhoneOffice));
       $("#email").html(doc.data().EmpMail);
+*/
       str += '<div class="box-profile">';
       if(xImgProfile!="") {
         str += '<img src="'+ xImgProfile +'" id="output" class="photo-center">';
@@ -228,6 +238,16 @@ function EditProfile() {
   } else {
     $("#sex").html("<div class='radio-toolbar'><input type='radio' id='radio1' name='sex' value='ชาย'><label for='radio1'>ชาย</label><input type='radio' id='radio2' name='sex' value='หญิง' checked><label for='radio2'>หญิง</label></div>");
   }
+  $("#birthday").html("<input id='txtbirthday' type='date' name='birthday' value='"+ xEmpBirthday +"'>");
+
+
+  if(xConfirmBox1=="ไม่ยอมรับ") {
+    $("#confirm1").html("<div class='radio-toolbar'><input type='radio' id='confirm1' name='confirm1' value='ยอมรับ'><label for='confirm1'>ยอมรับ</label><input type='radio' id='confirm2' name='confirm1' value='ไม่ยอมรับ' checked><label for='confirm2'>ไม่ยอมรับ</label></div>");
+  } else {
+    $("#confirm1").html("<div class='radio-toolbar'><input type='radio' id='confirm1' name='confirm1' value='ยอมรับ' checked><label for='confirm1'>ยอมรับ</label><input type='radio' id='confirm2' name='confirm1' value='ไม่ยอมรับ'><label for='confirm2'>ไม่ยอมรับ</label></div>");
+  }
+
+/*
   $("#homeaddress").html("<textarea id='txthomeaddress' name='text'>"+ xHomeAddress +"</textarea>");
   $("#phonehome").html("<input id='txtphonehome' type='number' value='"+ xPhoneHome +"'>");
   $("#phonemobile").html("<input id='txtphonemobile' type='number' value='"+ xPhoneMobile +"'>");
@@ -236,11 +256,11 @@ function EditProfile() {
   $("#companyname").html("<input id='txtcompanyname' type='text' value='"+ xCompanyName +"'>");
   $("#officeaddress").html("<textarea id='txtofficeaddress' name='text'>"+ xOfficeAddress +"</textarea>");
   $("#phoneoffice").html("<input id='txtcompanyname' type='number' value='"+ xPhoneOffice +"'>");
-  $("#birthday").html("<input id='txtbirthday' type='date' name='birthday' value='"+ xEmpBirthday +"'>");
   //$("#birthday").html("<input id='txtbirthday' type='date' name='birthday' value='1967-12-23'>");
   $("#office").html("<textarea name='text' id='Goffice'>ชั้น 18 สำนักงานใหญ่ 3000 ถนนพหลโยธิน แขวงลาดยาว เขตจตุจักร กทม. 10900</textarea>");
   $("#phoneoffice").html("<input id='txtphoneoffice' type='text' value='"+ xPhoneOffice +"'>");
   $("#email").html("<input id='txtemail' type='text' value='"+ xEmpMail +"'>");
+*/
   document.getElementById('savedata').style.display='block';
 }
 
@@ -254,9 +274,22 @@ function SaveProfile() {
 	    break;
 	  }
 	}
-  //var birthday = document.getElementById("Gbirthday").value;
-  xEmpBirthday = document.getElementById("txtbirthday").value;
+
+  var radios1 = document.getElementsByName('confirm1');
+
+  //var Xcon1 = document.getElementsByName('confirm1');
+  for (var i = 0, length = radios1.length; i < length; i++) {
+    if (radios1[i].checked) {
+      xConfirmBox1 = radios1[i].value;
+      console.log(radios1[i].value);
+      break;
+    }
+  }
+
   xEmpNickname = document.getElementById("txtnickname").value;
+  xEmpBirthday = document.getElementById("txtbirthday").value;
+
+/*
   xHomeAddress = document.getElementById("txthomeaddress").value;
   xPhoneHome = document.getElementById("txtphonehome").value;
   xPhoneOffice = document.getElementById("txtphoneoffice").value;
@@ -266,6 +299,7 @@ function SaveProfile() {
   xCompanyName = document.getElementById("txtcompanyname").value;
   xOfficeAddress = document.getElementById("txtofficeaddress").value;
   xEmpMail = document.getElementById("txtemail").value;
+*/
   Cal(xEmpBirthday);
   //console.log(age);
 
@@ -273,7 +307,9 @@ function SaveProfile() {
     EmpNickname : xEmpNickname,
     EmpSex : xEmpSex,
     EmpBirthday : xEditdate,
-    EmpAge : age,
+    EmpAge : age
+
+/*
     HomeAddress : xHomeAddress,
     PhoneHome : xPhoneHome,
     PhoneMobile : xPhoneMobile,
@@ -283,6 +319,7 @@ function SaveProfile() {
     Company_Name : xCompanyName,
     OfficeAddress : xOfficeAddress,
     EmpMail : xEmpMail
+*/
   });
   document.getElementById('id01').style.display='block';
   //console.log(xEmpSex)
@@ -334,8 +371,8 @@ function ResizeImage() {
           //NewDate();
           var sCampRound = "faifah";
           //var DateTimeStamp = Math.round(Date.now() / 1000);
-          //var ImgName = sCampRound+"-"+sessionStorage.getItem("EmpMember_faifah")+"-"+DateTimeStamp;
-          var ImgName = sCampRound+"_"+sessionStorage.getItem("EmpMember_faifah");
+          //var ImgName = sCampRound+"-"+sessionStorage.getItem("EmpID_faifah")+"-"+DateTimeStamp;
+          var ImgName = sCampRound+"_"+sessionStorage.getItem("EmpID_faifah");
           //console.log(ImgName);
           var uploadTask = firebase.storage().ref('Member/'+ImgName).put(file);
           var storage = firebase.storage().ref('Member/'+ImgName);
@@ -400,7 +437,7 @@ var CheckLikeID8 = "";
 function CheckLike() {
   var str = "";
   str += '<label class="form-control">';
-  dbFaiFahMember.where('EmpMember','==',sessionStorage.getItem("EmpMember_faifah"))
+  dbFaiFahMember.where('EmpMember','==',sessionStorage.getItem("EmpID_faifah"))
   .limit(1)
   .get().then((snapshot)=> {
     snapshot.forEach(doc=>{
@@ -526,6 +563,7 @@ function CheckBox(x) {
 
 
 function Cal(x) {
+    console.log(x);
     var today = new Date();
     var Xyear = Number(x.substr(0, 4));
     var Xmonth = Number(x.substr(4, 2)) - 1;
@@ -585,7 +623,7 @@ function formatPhoneHome(str) {
 
 function ConvertDate(x) {
   //x = '1967/12/23';
-  //console.log("date = "+x);
+  console.log("date = "+x);
   var monthNames = [
       "มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน",
       "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม.",
