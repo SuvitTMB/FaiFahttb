@@ -126,8 +126,11 @@
 
         <div id="NewMember" style="display: none;">  <!-- type 0 -->
           <div class="home-txt">คุณยังไม่ได้เป็นสมาชิกของศูนย์ไฟ-ฟ้า<br>กรุณาเลือกประเภทการสมัครเข้าศูนย์ไฟ-ฟ้า ทีทีบี</div>
-          <div class="btn btn-info btn-info-font btn-a1" onclick="RegType(1)">ประเภทนักเรียน</div>
-          <div class="btn btn-info btn-info-font btn-a2" onclick="RegType(2)">ประเภทอาสาสมัคร</div>
+          <br>
+          <div class="btn btn-info btn-info-font btn-a2" onclick="RegOpen(1)" style="width:120px;background: #0056ff;">เด็กห้องสมุด</div>
+          <div class="btn btn-info btn-info-font btn-a1" onclick="RegOpen(2)" style="width:120px;background: #f68b1f;">เด็กไฟ-ฟ้า</div><br>
+          <div class="btn btn-info btn-info-font btn-a1" onclick="RegOpen(3)" style="width:120px;background: #002d63;">อาสาสมัคร</div>
+          <div class="btn btn-info btn-info-font btn-a2" onclick="RegOpen(4)" style="width:120px;background: #677184;">อาจารย์</div>
         </div>
         <div id="EditMember" style="display: none;">  <!-- type 0 -->
           <div class="home-txt">คุณได้ทำการกรอกรายละเอียดการสมัครแล้ว<br>แต่คุณยังไม่ได้ทำการยืนยันการสมัคร</div>
@@ -135,7 +138,7 @@
         </div>
         <div id="ConfirmMember" style="display: none;">  <!-- type 0 -->
           <div class="home-txt">คุณได้ทำการยืนยันการสมัครแล้ว<br>กรุณาแสดงตัวตนที่ศูนย์ไฟ-ฟ้า</div>
-          <div class="btn btn-info btn-info-font btn-a1" onclick="RegType(1)">รอการยืนยันตัวตนของคุณที่ศูนย์ไฟ-ฟ้า ทุกแห่ง</div>
+          <div class="btn btn-info btn-info-font btn-a1" onclick="RegType(1)">รอยืนยันตัวตนของคุณที่ศูนย์ไฟ-ฟ้า</div>
         </div>
 
         <div id="GoFaiFah" style="display: none;"> 
@@ -146,7 +149,7 @@
         <div id="UpdateMember" style="display: none;"> 
           <div class="home-txt"><b>ยินดีต้อนรับสู่ ไฟ-ฟ้า ทีทีบี</b></div>
           <div id="DisplayMember"></div>
-          <div class="btn btn-info btn-info-font btn-a1 green" onclick="CheckDataMember()">คลิกเพื่อตรวจสอบข้อมูลสมาชิก</div>
+          <div class="btn btn-info btn-info-font btn-a1 green" onclick="CheckDataMember()">กรุณาตรวจสอบข้อมูลสมาชิกไฟ-ฟ้า</div>
         </div>
         <div id="CancelMember" style="display: none;"> 
           <div class="home-txt">ขณะนี้ระบบได้ทำการปิดการใช้งานของคุณแล้ว<br>กรุณาติดต่อศูนย์ไฟ-ฟ้าเพื่อขอเข้าใช้ระบบงาน</div>
@@ -182,6 +185,24 @@
     </center>
   </div>
 
+
+  <div id="id01" class="w3-modal w3-animate-opacity">
+    <div class="w3-modal-content w3-card-4">
+      <div class="w3-container" style="min-height:300px;padding:24px;width:100%;text-align:center;">
+        <div class="section-title">
+          <h2>สมัครสมาชิกศูนย์เรียนรู้ไฟ-ฟ้า</h2>
+        </div>
+        <div id="DisplayOpen"></div>
+        <!--
+        <div><img src="./icon/icon-youth.png" style="width:100%; margin:10px auto 20px auto; max-width:120px;"></div>
+        <div class="home-txt" style="margin-bottom: 30px;"><b>ประเภท เด็กห้องสมุด</b><br>(สำหรับเยาวชนอายุ 8 – ต่ำกว่า 12 ปี)</div>
+        <div onclick="CloseAll()" class="btn btn-info btn-info-font green">ยืนยันการสมัคร</div>
+        <div onclick="CloseAll()" class="btn btn-info btn-info-font grey">เลือกประเภทใหม่</div>
+      -->
+      </div>
+    </div>
+    <div class="clr" style="height: 70px;"></div>
+  </div>
 
 
 <!--
